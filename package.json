@@ -1,0 +1,27 @@
+{
+  "name": "mongoose-fast-pagination",
+  "version": "0.0.4",
+  "description": "A mongoose plugin providing efficient pagination",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caffeinated-tech/mongoose-pagination.git"
+  },
+  "keywords": [
+    "node",
+    "mongoose",
+    "plugin",
+    "pagination",
+    "efficient",
+    "optimised"
+  ],
+  "author": "liam@caffeinated.tech",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caffeinated-tech/mongoose-pagination/issues"
+  },
+  "homepage": "https://github.com/caffeinated-tech/mongoose-pagination#readme"
+}
