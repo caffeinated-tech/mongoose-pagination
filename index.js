@@ -8,6 +8,8 @@ const DefaultOptions = {
   includeHasMore: true
 }
 
+const ObjectIdRegexp = /^[0-9a-fA-F]{24}$/
+
 module.exports = exports = function paginationPlugin (schema, options = {}) {
   // Overwrite default options with user supplied options
   options = Object.assign(DefaultOptions, options)
@@ -31,9 +33,11 @@ module.exports = exports = function paginationPlugin (schema, options = {}) {
     if (options.includeTotalCount) {
       totalCount = await this.where(where).count()
     }
+
+
     // Looking for a page starting after the document with the lastId. Load the 
     //  model and update the query params to find the next page of documents 
-    if (lastId !== null && lastId !== undefined) {
+    if (lastId !== null && lastId !== undefined && lastId.match(ObjectIdRegexp)) {
       lastDocument = await this.findById(lastId)
       if (lastDocument === null) {
         return {
