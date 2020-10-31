@@ -13,8 +13,9 @@ const ObjectIdRegexp = /^[0-9a-fA-F]{24}$/
 module.exports = exports = function paginationPlugin (schema, options = {}) {
   // Overwrite default options with user supplied options
   options = Object.assign({}, DefaultOptions, options)
-  schema.statics.paginate = async function ({ where, sort, lastId = null }) {
-    let limit = options.perPage
+  schema.statics.paginate = async function ({ where, sort, lastId = null, perPage }) {
+    perPage = perPage || options.perPage
+    let limit = perPage
     let hasMore
     let query
     let lastDocument
@@ -69,7 +70,7 @@ module.exports = exports = function paginationPlugin (schema, options = {}) {
     documents = await query.exec()  
     count = documents.length
     if (options.includeHasMore) {
-      if (documents.length > options.perPage) {
+      if (documents.length > perPage) {
         hasMore = true
         documents.pop()
       } else {
