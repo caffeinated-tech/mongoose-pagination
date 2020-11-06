@@ -13,7 +13,7 @@ const ObjectIdRegexp = /^[0-9a-fA-F]{24}$/
 module.exports = exports = function paginationPlugin (schema, options = {}) {
   // Overwrite default options with user supplied options
   options = Object.assign({}, DefaultOptions, options)
-  schema.statics.paginate = async function ({ where, sort, lastId = null, perPage }) {
+  schema.statics.paginate = async function ({ where, sort, lastId = null, perPage, projection = {} }) {
     perPage = perPage || options.perPage
     let limit = perPage
     let hasMore
@@ -29,10 +29,14 @@ module.exports = exports = function paginationPlugin (schema, options = {}) {
       limit++
     }
 
-    query = this.where(where).limit(limit).sort(sort)
+    query = this.find(where)
+    if (Object.keys(projection).length > 0) {
+      query.projection(projection)
+    }
+    query = query.limit(limit).sort(sort)
 
     if (options.includeTotalCount) {
-      totalCount = await this.where(where).count()
+      totalCount = await this.find(where).count()
     }
 
 
