@@ -62,10 +62,10 @@ module.exports = exports = function paginationPlugin (schema, options = {}) {
         let order = sort[field]
         if (order === 'asc' || order == 'ascending' || order === 1) {
           // ascending order
-          query.gt(field, lastDocument[field])
+          query.gte(field, lastDocument[field])
         } else {
           // descending order
-          query.lt(field, lastDocument[field])
+          query.lte(field, lastDocument[field])
         }
       }
     }
@@ -81,6 +81,13 @@ module.exports = exports = function paginationPlugin (schema, options = {}) {
         hasMore = false
       }
     }
+
+    // using GTE/LTE to allow fields which overlap to be used in queries means we 
+    //  may get the last document again, so remove it if this happens
+    if (lastDocument && documents[0].id.toString() === lastDocument.id.toString()) {
+      documents.shift()
+    }
+
 
     return {
       documents: documents,
