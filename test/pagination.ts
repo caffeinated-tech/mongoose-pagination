@@ -10,7 +10,6 @@ const { Item } = require('./_models.ts')
 describe('Item', async function () {
   describe('Paginate', async function () {
     it('returns documents and hasMore flag', async function () {
-      console.log('start', 1)
       let { documents, hasMore } = await Item.paginate({
         where: {}
       })

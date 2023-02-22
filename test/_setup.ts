@@ -31,22 +31,17 @@ async function generateItems (n) {
 
 module.exports.mochaHooks = {
 	beforeEach: async function () {
-		console.info('beforeEach')
+		mongoose.set('strictQuery', false);
 		// connect to mongodb with mongoose
 		await mongoose.connect(url)
-		console.info('connected to db')
 		// build indexes
 		await Item.createIndexes()
-		console.info('built index')
 		// create sample test data
 		await generateItems(1000)
-		console.info('generated 1000 items')
 	},
 	afterEach: async function () {
 		await Item.deleteMany()
-		console.info('deleted all items')
 		await mongoose.disconnect()
-		console.info('disconnected from DB')
 	}
 }
 

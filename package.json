@@ -4,7 +4,8 @@
   "description": "A mongoose plugin providing efficient pagination",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*"
+    "test": "mocha",
+    "coverage": "nyc --reporter=text mocha"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,8 @@
   },
   "homepage": "https://github.com/caffeinated-tech/mongoose-pagination#readme",
   "devDependencies": {
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0"
   },
   "dependencies": {
     "mongoose": "^6.9.2"
