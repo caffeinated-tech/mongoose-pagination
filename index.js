@@ -13,7 +13,7 @@ const ObjectIdRegexp = /^[0-9a-fA-F]{24}$/
 module.exports = exports = function paginationPlugin (schema, options = {}) {
   // Overwrite default options with user supplied options
   options = Object.assign({}, DefaultOptions, options)
-  schema.statics.paginate = async function ({ where, sort, lastId = null, perPage, projection = {} }) {
+  schema.statics.paginate = async function ({ where = {}, sort = {}, lastId = null, perPage, projection = {} }) {
     perPage = perPage || options.perPage
     let limit = perPage
     let hasMore
