@@ -1,7 +1,17 @@
-# mongoose-fast-pagination
-A mongoose plugin for efficient query pagination
-
-[![Coverage Badge](https://img.shields.io/nycrc/caffeinated-tech/mongoose-pagination?config=.nycrc&preferredThreshold=lines)]
+<p align="center">
+  <h1> Mongoose-Fast-Pagination </h1>
+  <b>
+    A mongoose plugin for efficient query pagination
+  </b>
+</p>
+<p align="center">
+  <a href="https://github.com/caffeinated-tech/mongoose-pagination/graphs/contributors" alt="Contributors">
+    <img src="https://img.shields.io/github/contributors/caffeinated-tech/mongoose-pagination" />
+  </a>
+  <a href="https://github.com/caffeinated-tech/mongoose-pagination/test" alt="Tests">
+    <img src="https://img.shields.io/nycrc/caffeinated-tech/mongoose-pagination?config=.nycrc&preferredThreshold=lines" />
+  </a>
+</p>
 
 ## Install
 
