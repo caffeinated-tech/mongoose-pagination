@@ -2,5 +2,9 @@
 	"all": true,
 	"check-coverage": false,
 	"reporter": "[text]",
-	"report-dir": "./coverage"
+	"report-dir": "./coverage",
+    "branches": 80,
+    "lines": 80,
+	"functions": 80,
+    "statements": 80
 }
