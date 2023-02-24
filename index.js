@@ -2,7 +2,7 @@
 const DefaultOptions = {
   perPage: 100,
   defaultSortOrder: {
-    _id: 1
+    _id: -1
   },
   includeTotalCount: false,
   includeHasMore: true
@@ -13,8 +13,12 @@ const ObjectIdRegexp = /^[0-9a-fA-F]{24}$/
 module.exports = exports = function paginationPlugin (schema, options = {}) {
   // Overwrite default options with user supplied options
   options = Object.assign({}, DefaultOptions, options)
+  
   schema.statics.paginate = async function ({ where = {}, sort = {}, lastId = null, perPage, projection = {} }) {
     perPage = perPage || options.perPage
+    // need a default sort order for pages to be ordered and not containing 
+    //  duplicates
+    sort = sort || defaultSortOrder
     let limit = perPage
     let hasMore
     let query
@@ -82,18 +86,20 @@ module.exports = exports = function paginationPlugin (schema, options = {}) {
       }
     }
 
-    // using GTE/LTE to allow fields which overlap to be used in queries means we 
-    //  may get the last document again, so remove it if this happens
+    // using GTE/LTE to allow fields which overlap to be used in queries means 
+    //   last document may be duplicated. Remove it if this happens
+
+    // FIXME: it is possible that there is a larger overlap if there are
+    //   multiple documents with the same value that is being sorted by
     if (lastDocument && documents[0].id.toString() === lastDocument.id.toString()) {
       documents.shift()
     }
 
-
     return {
-      documents: documents,
-      hasMore: hasMore,
-      count: count,
-      totalCount: totalCount
+      documents,
+      hasMore,
+      count,
+      totalCount
     } 
   }
 }
