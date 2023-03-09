@@ -20,7 +20,11 @@ async function generateItems (n) {
 				ownerId,
 				createdAt: new Date(fakeTimestamp),
 				updatedAt: new Date(fakeTimestamp),
-				name: `name_${i}`
+				name: `name_${i}`,
+				nested: {
+					field: `name_${i}`, 
+					dateField: new Date(fakeTimestamp)
+				}
 			}))
 		}
 		await Item.insertMany(items)

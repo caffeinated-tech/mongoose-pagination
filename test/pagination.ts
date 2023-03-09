@@ -17,6 +17,49 @@ describe('Item', async function () {
       assert.equal(documents.length, 100);
     });
 
+    it('returns total count as set in model options', async function () {
+      let { totalCount } = await Item.paginate({
+        where: {}
+      })
+      assert.equal(totalCount, 1000, 'totalCount isnt returned');
+    });
+
+    it('doesnt return total count if ovverode in options', async function () {
+      let { totalCount } = await Item.paginate({
+        where: {},
+        options: {
+          includeTotalCount: false
+        }
+      })
+      assert.ok(!totalCount, 'totalCount is returned');
+    });
+
+    it('can project fields to be returned', async function () {
+      let { documents } = await Item.paginate({      
+        projection: {
+          name: 1,
+          createdAt: 1
+        }
+      })
+   
+      assert.notEqual(documents[0].id, undefined, 'document needs the id field');
+      assert.notEqual(documents[0].name, undefined, 'document needs the name field');
+      assert.notEqual(documents[0].createdAt, undefined, 'document needs the createdAt field');
+      assert.equal(documents[0].ownerId, undefined, 'document should not have ownerId field');
+      assert.equal(documents[0].nested?.field, undefined, 'document should not have nested.field field');
+      assert.equal(documents[0].nested?.dateField, undefined, 'document should not have nested.dateField field');
+    });
+
+    it('returns empty array if nothing found', async function () {
+      let { documents, hasMore } = await Item.paginate({
+        where: {
+          name: 'nonexistant'
+        }
+      })
+      assert.equal(hasMore, false);
+      assert.equal(documents.length, 0);
+    });
+
     it('hasMore is false if no more documents', async function () {
       let { documents, hasMore } = await Item.paginate({
         where: {},
@@ -113,5 +156,59 @@ describe('Item', async function () {
       let secondPageFirstItemTimestamp = secondPageFirstItem.createdAt.getTime()
       assert.equal(firstPageLastItemTimestamp, secondPageFirstItemTimestamp - 1000)
     });
+
+    it('Can return an empty second page when there are no more', async function () {
+      let { documents, hasMore } = await Item.paginate({
+        where: {},
+        sort: {
+          createdAt: 1
+        },
+        perPage: 1000
+      })
+      const lastId = documents[documents.length - 1].id
+      let secondPage = await Item.paginate({
+        where: {},
+        sort: {
+          createdAt: 1
+        },
+        perPage: 1000,
+        lastId
+      })
+      assert.equal(secondPage.hasMore, false);
+      assert.equal(secondPage.documents.length, 0);
+    });
+
+    it('can filter by nested field', async function () {
+      let { documents, hasMore } = await Item.paginate({
+        where: {
+          'nested.field': 'name_0'
+        },
+        perPage: 5
+      })
+      
+      assert.equal(hasMore, false);
+      assert.equal(documents.length, 1);
+    })
+
+    it('can sort by nested field', async function () {
+      let { documents, hasMore } = await Item.paginate({
+        where: {},
+        sort: {
+          'nested.dateField': -1
+        },
+        perPage: 100
+      })
+
+      assert.equal(hasMore, true);
+      assert.equal(documents.length, 100);
+      const lastId = documents[documents.length - 1].id
+      let secondPage = await Item.paginate({
+        where: {},
+        perPage: 100,
+        lastId
+      })
+      assert.equal(secondPage.hasMore, true);
+      assert.equal(secondPage.documents.length, 100);
+    })
   });
 });

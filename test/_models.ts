@@ -4,14 +4,19 @@ const mongooseFastPagination = require('../index.js')
 // create a basic schema to test pagination features with
 const schema = new mongoose.Schema({ 
 	name: String,
-	ownerId: mongoose.ObjectId
+	ownerId: mongoose.ObjectId,
+	nested: {
+		field: String,
+		dateField: Date
+	}
 }, {
 	timestamps: true
 })
 
 // hookup the plugin so it can be tested
 schema.plugin(mongooseFastPagination, {
-	perPage: 100
+	perPage: 100,
+	includeTotalCount: 100
 })
 
 // some basic indexes to test their usage by the plugin

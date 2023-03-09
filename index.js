@@ -12,20 +12,33 @@ const ObjectIdRegexp = /^[0-9a-fA-F]{24}$/
 
 module.exports = exports = function paginationPlugin (schema, options = {}) {
   // Overwrite default options with user supplied options
-  options = Object.assign({}, DefaultOptions, options)
+  const globalOptions = Object.assign({}, DefaultOptions, options)
   
-  schema.statics.paginate = async function ({ where = {}, sort = {}, lastId = null, perPage, projection = {} }) {
+  schema.statics.paginate = async function ({ 
+    where = {}, 
+    sort, 
+    lastId = null, 
+    perPage, 
+    projection = {},
+    options
+  }) {
+    options = Object.assign({}, globalOptions, options)
     perPage = perPage || options.perPage
     // need a default sort order for pages to be ordered and not containing 
     //  duplicates
-    sort = sort || defaultSortOrder
+    sort = sort || options.defaultSortOrder
     let limit = perPage
     let hasMore
     let query
     let lastDocument
-    let documents
-    let count
-    let totalCount
+    let documents = []
+    let count = options
+    let totalCount = 0
+    // increment documents to be fetched by one if this isn't the first page
+    //  as it may include overlap to the last document
+    if (lastId)  {
+      limit++
+    }
     
     // set the per page limit. If the hasMore flag is requested, increment by 1
     //  so we can tell if there is another page of documents to fetch
@@ -91,7 +104,12 @@ module.exports = exports = function paginationPlugin (schema, options = {}) {
 
     // FIXME: it is possible that there is a larger overlap if there are
     //   multiple documents with the same value that is being sorted by
-    if (lastDocument && documents[0].id.toString() === lastDocument.id.toString()) {
+    if (lastDocument && documents?.[0].id.toString() === lastDocument.id.toString()) {
+      documents.shift()
+    } else if (!!lastId && hasMore) {
+      // we loaded an extra item in case there was a duplicate of the lastDocument
+      //  but there wasn't one. Remove another document from the end
+      //  to bring the count back to the normal count
       documents.shift()
     }
 
