@@ -6,7 +6,7 @@
 module.exports = {
   color: true,
   extension: ['js', 'ts'],
-  reporter: 'progress',
+  reporter: 'spec',
   require: 'test/_setup.ts',
   timeout: '10000'
 };
