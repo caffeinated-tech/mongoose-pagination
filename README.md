@@ -7,7 +7,17 @@
 <p align="center">
   <a href="https://github.com/caffeinated-tech/mongoose-pagination/graphs/contributors" alt="Contributors">
     <img src="https://img.shields.io/github/contributors/caffeinated-tech/mongoose-pagination" />
+  </a>  
+
+  <a href='https://www.npmjs.com/package/mongoose-fast-pagination'>
+    <img src='https://img.shields.io/npm/dw/mongoose-fast-pagination' alt='Downloads' />
   </a>
+
+
+  <a href='https://github.com/caffeinated-tech/mongoose-pagination/actions/workflows/tests.yaml'>
+    <img src='https://coveralls.io/repos/github/caffeinated-tech/mongoose-pagination/badge.svg?branch=master' alt='Automated Tests' />
+  </a>
+
   <a href='https://coveralls.io/github/caffeinated-tech/mongoose-pagination?branch=master'>
     <img src='https://coveralls.io/repos/github/caffeinated-tech/mongoose-pagination/badge.svg?branch=master' alt='Coverage Status' />
   </a>

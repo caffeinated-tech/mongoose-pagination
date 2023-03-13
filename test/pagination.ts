@@ -34,6 +34,16 @@ describe('Item', async function () {
       assert.ok(!totalCount, 'totalCount is returned');
     });
 
+    it('doesnt return hsaMore if ovverode in options', async function () {
+      let { hasMore } = await Item.paginate({
+        where: {},
+        options: {
+          includeHasMore: false
+        }
+      })
+      assert.ok(!hasMore, 'hasMore is returned');
+    });
+
     it('can project fields to be returned', async function () {
       let { documents } = await Item.paginate({      
         projection: {
@@ -59,6 +69,7 @@ describe('Item', async function () {
       assert.equal(hasMore, false);
       assert.equal(documents.length, 0);
     });
+
 
     it('hasMore is false if no more documents', async function () {
       let { documents, hasMore } = await Item.paginate({
@@ -178,6 +189,30 @@ describe('Item', async function () {
       assert.equal(secondPage.documents.length, 0);
     });
 
+    it('Can return an empty second page when the lastId document is deleted', async function () {
+      let { documents, hasMore } = await Item.paginate({
+        where: {},
+        sort: {
+          createdAt: 1
+        },
+        perPage: 1000
+      })
+      const lastDocument = documents[documents.length - 1]
+      const lastId = lastDocument.id
+      await lastDocument.delete()
+
+      let secondPage = await Item.paginate({
+        where: {},
+        sort: {
+          createdAt: 1
+        },
+        perPage: 1000,
+        lastId
+      })
+      assert.equal(secondPage.hasMore, false);
+      assert.equal(secondPage.documents.length, 0);
+    });
+
     it('can filter by nested field', async function () {
       let { documents, hasMore } = await Item.paginate({
         where: {
@@ -188,6 +223,46 @@ describe('Item', async function () {
       
       assert.equal(hasMore, false);
       assert.equal(documents.length, 1);
+    })
+
+    it('can sort by in ascending order', async function () {
+      let { documents, hasMore } = await Item.paginate({
+        where: {},
+        sort: {
+          createdAt: -1
+        },
+        perPage: 100
+      })
+
+      assert.equal(hasMore, true);
+      assert.equal(documents.length, 100);
+      let previousDocument = null
+      for (let document of documents) {
+        if (previousDocument) {
+          assert.ok(document.createdAt < previousDocument.createdAt, 'each document should have a smaller createdAt than the previous one')
+        }
+        previousDocument = document
+      }
+    })
+
+    it('can sort by in descending order', async function () {
+      let { documents, hasMore } = await Item.paginate({
+        where: {},
+        sort: {
+          createdAt: 1
+        },
+        perPage: 100
+      })
+
+      assert.equal(hasMore, true);
+      assert.equal(documents.length, 100);
+      let previousDocument = null
+      for (let document of documents) {
+        if (previousDocument) {
+          assert.ok(document.createdAt > previousDocument.createdAt, 'each document should have a smaller createdAt than the previous one')
+        }
+        previousDocument = document
+      }
     })
 
     it('can sort by nested field', async function () {
@@ -201,14 +276,6 @@ describe('Item', async function () {
 
       assert.equal(hasMore, true);
       assert.equal(documents.length, 100);
-      const lastId = documents[documents.length - 1].id
-      let secondPage = await Item.paginate({
-        where: {},
-        perPage: 100,
-        lastId
-      })
-      assert.equal(secondPage.hasMore, true);
-      assert.equal(secondPage.documents.length, 100);
     })
   });
 });
