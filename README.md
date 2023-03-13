@@ -15,7 +15,7 @@
 
 
   <a href='https://github.com/caffeinated-tech/mongoose-pagination/actions/workflows/tests.yaml'>
-    <img src='https://coveralls.io/repos/github/caffeinated-tech/mongoose-pagination/badge.svg?branch=master' alt='Automated Tests' />
+    <img src='https://github.com/caffeinated-tech/mongoose-pagination/actions/workflows/tests.yaml/badge.svg' alt='Automated Tests' />
   </a>
 
   <a href='https://coveralls.io/github/caffeinated-tech/mongoose-pagination?branch=master'>
