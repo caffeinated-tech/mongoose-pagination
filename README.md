@@ -8,8 +8,8 @@
   <a href="https://github.com/caffeinated-tech/mongoose-pagination/graphs/contributors" alt="Contributors">
     <img src="https://img.shields.io/github/contributors/caffeinated-tech/mongoose-pagination" />
   </a>
-  <a href="https://github.com/caffeinated-tech/mongoose-pagination/test" alt="Tests">
-    <img src="https://img.shields.io/nycrc/caffeinated-tech/mongoose-pagination?config=.nycrc&preferredThreshold=lines" />
+  <a href='https://coveralls.io/github/caffeinated-tech/mongoose-pagination?branch=master'>
+    <img src='https://coveralls.io/repos/github/caffeinated-tech/mongoose-pagination/badge.svg?branch=master' alt='Coverage Status' />
   </a>
 </p>
 
