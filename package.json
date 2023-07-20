@@ -1,6 +1,6 @@
 {
   "name": "mongoose-fast-pagination",
-  "version": "0.0.8",
+  "version": "0.0.11",
   "description": "A mongoose plugin providing efficient pagination",
   "main": "index.js",
   "scripts": {

@@ -104,7 +104,7 @@ module.exports = exports = function paginationPlugin (schema, options = {}) {
 
     // FIXME: it is possible that there is a larger overlap if there are
     //   multiple documents with the same value that is being sorted by
-    if (lastDocument && documents?.[0].id.toString() === lastDocument.id.toString()) {
+    if (lastDocument && documents?.[0]?.id?.toString() === lastDocument?.id?.toString()) {
       documents.shift()
     } else if (!!lastId && hasMore) {
       // we loaded an extra item in case there was a duplicate of the lastDocument
